@@ -29,6 +29,8 @@ import re
 import random
 import os
 import multiprocessing as mp
+import locale
+locale.setlocale(locale.LC_ALL, 'pt_BR')  # nopep8
 import logging
 import json
 import gzip
@@ -54,7 +56,7 @@ __deprecated__ = False
 __license__ = "GPLv3"
 __status__ = "Development"
 __date__ = "2020/06/18"
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 
 
 # multiprocessing requires passing these vars explicitly
@@ -400,9 +402,9 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
             color='#777777', bbox=dict(facecolor='white', alpha=0.75, edgecolor='white'))
     ax.text(0.985, 0.02, 'Fontes: IBGE / Secretarias de Saúde Estaduais / Brasil.IO', transform=ax.transAxes, ha='right',
             color='#777777', bbox=dict(facecolor='white', alpha=0.75, edgecolor='white'))
-    fmt = '{:n}'
+    fmt = '%.0f'
     if 'per' in gtype:
-        fmt = '{:.2f}'
+        fmt = '%.2f'
     # add text and flags to every bar
     space = "       "
     zoom = 0.06
@@ -412,7 +414,7 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
         zoom = 0.12
         xbox = 26
     for code, x, y in zip(vals.index, vals.values, y_pos.values):
-        val = fmt.format(round(x, 2))
+        val = locale.format_string(fmt, round(x, 2), True)
         pos = int(round(nvals - y + 1))
         ax.text(x, y, space + val + " (P" + str(pos) + ")",
                 va='center', ha='left', fontsize=12)
@@ -438,7 +440,7 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
     ax.set_title(title[gtype].format(dt).upper(), fontsize=18, y=1.05)
     ax.xaxis.grid(which='major', alpha=0.5)
     ax.xaxis.grid(which='minor', alpha=0.2)
-    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:.0f}'))
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:n}'))
     # finally plot
     ax.barh(y_pos, vals, align='center', color=color)
 
@@ -550,7 +552,7 @@ def linePlot(df, state, states, cmdargs):
     ax.xaxis.set_minor_locator(mdates.DayLocator())
     ax.xaxis.set_major_locator(mdates.WeekdayLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%Y'))
-    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:.0f}'))
+    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:n}'))
     ax.set_facecolor(PARAMS['FACECOLOR'])
     handles = plt.Rectangle((0, 0), 1, 1, fill=True, color=color)
     ax.legend((handles,), (states.loc[state, 'state'],), loc='upper left',
@@ -857,6 +859,7 @@ if __name__ == '__main__':
         numcores = int(mp.cpu_count() / 2)
         numthreads = 2 * len(PARAMS['GTYPES']) if numcores > len(
             PARAMS['GTYPES']) else numcores
+        LOGGER.info("Utilizando {} threads".format(numthreads))
         pool = mp.Pool(numthreads)
 
     try:
