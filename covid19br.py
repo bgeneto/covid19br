@@ -40,7 +40,6 @@ mpl.use('Agg')  # nopep8
 import matplotlib.animation as animation
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 from matplotlib.offsetbox import AnnotationBbox, OffsetImage
 import requests
 import pandas as pd
@@ -422,9 +421,9 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
     tipo = {'city': 'capitais', 'state': 'estados'}
     title = {}
     xlabel = {}
-    title['confirmed'] = "Casos de Covid-19 - {} ({})"
+    title['confirmed'] = "Casos de Covid-19 ({})"
     xlabel['confirmed'] = 'Total de Casos Confirmados'
-    title['deaths'] = "Mortes por Covid-19 - {} ({})"
+    title['deaths'] = "Mortes por Covid-19 ({})"
     xlabel['deaths'] = 'Total de Fatalidades'
     title['confirmed_per_mil'] = "Casos de Covid-19 por Milhão de Habitantes ({})"
     xlabel['confirmed_per_mil'] = 'Total de Casos por Milhão de Habitantes'
@@ -436,11 +435,10 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
     xlabel['deaths_per_den'] = 'Total de Fatalidades por hab./ha'
 
     ax.set_xlabel(xlabel[gtype].lower(), fontsize=16)
-    ax.set_title(title[gtype].format(
-        dt, tipo[ptype]).upper(), fontsize=18, y=1.05)
+    ax.set_title(title[gtype].format(dt).upper(), fontsize=18, y=1.05)
     ax.xaxis.grid(which='major', alpha=0.5)
     ax.xaxis.grid(which='minor', alpha=0.2)
-    ax.xaxis.set_major_formatter(ticker.StrMethodFormatter('{x:n}'))
+    ax.xaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:.0f}'))
     # finally plot
     ax.barh(y_pos, vals, align='center', color=color)
 
@@ -474,14 +472,16 @@ def hbarPlot(df, ptype, gtype, states, cmdargs):
     vsize = round(rows / 3, 2)
     vsize = vsize if vsize > 8 else 8
     fig, ax = plt.subplots(figsize=(vsize * 1.7, vsize))
+    ax.set_facecolor(PARAMS['FACECOLOR'])
+    ax.xaxis.set_tick_params(labeltop='on')
+    ax.xaxis.set_ticks_position('both')
+    ax.set_axisbelow(True)
     vals = df[gtype]
     y_pos = vals.rank(method='first')  # list(range(len(df[gtype])))
-    # uggly but required in order to keep original keys order
     codes = list(df.index.values)
     ylabels = [states.loc[v, ptype] for v in codes]
     setupHbarPlot(vals, y_pos, ylabels, ptype, gtype,
                   dt.strftime('%d/%m/%Y'), ax, color_grad)
-    ax.set_facecolor(PARAMS['FACECOLOR'])
     fn = os.path.join("output", "png", f"{gtype}_per_{ptype}.png")
     plt.savefig(fn, bbox_inches='tight', facecolor=fig.get_facecolor())
     plt.close('all')
@@ -550,7 +550,7 @@ def linePlot(df, state, states, cmdargs):
     ax.xaxis.set_minor_locator(mdates.DayLocator())
     ax.xaxis.set_major_locator(mdates.WeekdayLocator())
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%Y'))
-    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:n}'))
+    ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:.0f}'))
     ax.set_facecolor(PARAMS['FACECOLOR'])
     handles = plt.Rectangle((0, 0), 1, 1, fill=True, color=color)
     ax.legend((handles,), (states.loc[state, 'state'],), loc='upper left',
