@@ -54,8 +54,8 @@ __copyright__ = "Copyright 2020, bgeneto"
 __deprecated__ = False
 __license__ = "GPLv3"
 __status__ = "Development"
-__date__ = "2020/06/17"
-__version__ = "0.1.6"
+__date__ = "2020/06/18"
+__version__ = "0.1.7"
 
 
 # multiprocessing requires passing these vars explicitly
@@ -422,9 +422,9 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
     tipo = {'city': 'capitais', 'state': 'estados'}
     title = {}
     xlabel = {}
-    title['confirmed'] = "Casos de Covid-19 ({}) - {}"
+    title['confirmed'] = "Casos de Covid-19 - {} ({})"
     xlabel['confirmed'] = 'Total de Casos Confirmados'
-    title['deaths'] = "Mortes por Covid-19  ({}) - {}"
+    title['deaths'] = "Mortes por Covid-19 - {} ({})"
     xlabel['deaths'] = 'Total de Fatalidades'
     title['confirmed_per_mil'] = "Casos de Covid-19 por Milhão de Habitantes ({})"
     xlabel['confirmed_per_mil'] = 'Total de Casos por Milhão de Habitantes'
