@@ -1,0 +1,190 @@
+[{
+		"sigla": "AC",
+		"nome": "Acre",
+		"capital": "Rio Branco",
+		"area": 164123.964,
+		"area_capital": 8834.942
+	},
+	{
+		"sigla": "AL",
+		"nome": "Alagoas",
+		"capital": "Maceió",
+		"area": 27843.295,
+		"area_capital": 509.32
+	},
+	{
+		"sigla": "AM",
+		"nome": "Amazonas",
+		"capital": "Manaus",
+		"area": 1559167.889,
+		"area_capital": 11401.092
+	},
+	{
+		"sigla": "AP",
+		"nome": "Amapá",
+		"capital": "Macapá",
+		"area": 142470.762,
+		"area_capital": 6563.849
+	},
+	{
+		"sigla": "BA",
+		"nome": "Bahia",
+		"capital": "Salvador",
+		"area": 564760.427,
+		"area_capital": 693.453
+	},
+	{
+		"sigla": "CE",
+		"nome": "Ceará",
+		"capital": "Fortaleza",
+		"area": 148894.441,
+		"area_capital": 312.353
+	},
+	{
+		"sigla": "DF",
+		"nome": "Distrito Federal",
+		"capital": "Brasília",
+		"area": 5760.783,
+		"area_capital": 5760.783
+	},
+	{
+		"sigla": "ES",
+		"nome": "Espírito Santo",
+		"capital": "Vitória",
+		"area": 46074.447,
+		"area_capital": 97.123
+	},
+	{
+		"sigla": "GO",
+		"nome": "Goiás",
+		"capital": "Goiânia",
+		"area": 340203.329,
+		"area_capital": 728.841
+	},
+	{
+		"sigla": "MA",
+		"nome": "Maranhão",
+		"capital": "São Luís",
+		"area": 329642.182,
+		"area_capital": 582.974
+	},
+	{
+		"sigla": "MG",
+		"nome": "Minas Gerais",
+		"capital": "Belo Horizonte",
+		"area": 586521.123,
+		"area_capital": 331.354
+	},
+	{
+		"sigla": "MS",
+		"nome": "Mato Grosso do Sul",
+		"capital": "Campo Grande",
+		"area": 357145.534,
+		"area_capital": 8082.978
+	},
+	{
+		"sigla": "MT",
+		"nome": "Mato Grosso",
+		"capital": "Cuiabá",
+		"area": 903207.019,
+		"area_capital": 3266.538
+	},
+	{
+		"sigla": "PA",
+		"nome": "Pará",
+		"capital": "Belém",
+		"area": 1245870.798,
+		"area_capital": 1059.466
+	},
+	{
+		"sigla": "PB",
+		"nome": "Paraíba",
+		"capital": "João Pessoa",
+		"area": 56467.242,
+		"area_capital": 210.044
+	},
+	{
+		"sigla": "PE",
+		"nome": "Pernambuco",
+		"capital": "Recife",
+		"area": 98067.881,
+		"area_capital": 218.843
+	},
+	{
+		"sigla": "PI",
+		"nome": "Piauí",
+		"capital": "Teresina",
+		"area": 251756.515,
+		"area_capital": 1391.046
+	},
+	{
+		"sigla": "PR",
+		"nome": "Paraná",
+		"capital": "Curitiba",
+		"area": 199298.979,
+		"area_capital": 434.892
+	},
+	{
+		"sigla": "RJ",
+		"nome": "Rio de Janeiro",
+		"capital": "Rio de Janeiro",
+		"area": 43750.427,
+		"area_capital": 1200.329
+	},
+	{
+		"sigla": "RN",
+		"nome": "Rio Grande do Norte",
+		"capital": "Natal",
+		"area": 52809.602,
+		"area_capital": 167.401
+	},
+	{
+		"sigla": "RO",
+		"nome": "Rondônia",
+		"capital": "Porto Velho",
+		"area": 237765.24,
+		"area_capital": 34090.952
+	},
+	{
+		"sigla": "RR",
+		"nome": "Roraima",
+		"capital": "Boa Vista",
+		"area": 223644.527,
+		"area_capital": 5687.037
+	},
+	{
+		"sigla": "RS",
+		"nome": "Rio Grande do Sul",
+		"capital": "Porto Alegre",
+		"area": 281707.156,
+		"area_capital": 495.39
+	},
+	{
+		"sigla": "SC",
+		"nome": "Santa Catarina",
+		"capital": "Florianópolis",
+		"area": 95730.684,
+		"area_capital": 674.844
+	},
+	{
+		"sigla": "SE",
+		"nome": "Sergipe",
+		"capital": "Aracaju",
+		"area": 21925.424,
+		"area_capital": 182.163
+	},
+	{
+		"sigla": "SP",
+		"nome": "São Paulo",
+		"capital": "São Paulo",
+		"area": 248219.481,
+		"area_capital": 1521.11
+	},
+	{
+		"sigla": "TO",
+		"nome": "Tocantins",
+		"capital": "Palmas",
+		"area": 277466.763,
+		"area_capital": 2227.444
+	}
+]

@@ -1,0 +1,28 @@
+uf,state,city,region,area,area_capital
+AC,Acre,Rio Branco,Norte,164123.964,8834.942
+AL,Alagoas,Maceió,Nordeste,27843.295,509.32
+AM,Amazonas,Manaus,Norte,1559167.889,11401.092
+AP,Amapá,Macapá,Norte,142470.762,6563.849
+BA,Bahia,Salvador,Nordeste,564760.427,693.453
+CE,Ceará,Fortaleza,Nordeste,148894.441,312.353
+DF,Distrito Federal,Brasília,Centro-Oeste,5760.783,5760.783
+ES,Espírito Santo,Vitória,Sudeste,46074.447,97.123
+GO,Goiás,Goiânia,Centro-Oeste,340203.329,728.841
+MA,Maranhão,São Luís,Nordeste,329642.182,582.974
+MG,Minas Gerais,Belo Horizonte,Sudeste,586521.123,331.354
+MS,Mato Grosso do Sul,Campo Grande,Centro-Oeste,357145.534,8082.978
+MT,Mato Grosso,Cuiabá,Centro-Oeste,903207.019,3266.538
+PA,Pará,Belém,Norte,1245870.798,1059.466
+PB,Paraíba,João Pessoa,Nordeste,56467.242,210.044
+PE,Pernambuco,Recife,Nordeste,98067.881,218.843
+PI,Piauí,Teresina,Nordeste,251756.515,1391.046
+PR,Paraná,Curitiba,Sul,199298.979,434.892
+RJ,Rio de Janeiro,Rio de Janeiro,Sudeste,43750.427,1200.329
+RN,Rio Grande do Norte,Natal,Sudeste,52809.602,167.401
+RO,Rondônia,Porto Velho,Norte,237765.24,34090.952
+RR,Roraima,Boa Vista,Norte,223644.527,5687.037
+RS,Rio Grande do Sul,Porto Alegre,Sul,281707.156,495.39
+SC,Santa Catarina,Florianópolis,Sul,95730.684,674.844
+SE,Sergipe,Aracaju,Nordeste,21925.424,182.163
+SP,São Paulo,São Paulo,Sudeste,248219.481,1521.11
+TO,Tocantins,Palmas,Norte,277466.763,2227.444
