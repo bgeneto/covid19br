@@ -1,0 +1,6 @@
+numpngw
+numpy
+matplotlib
+pandas
+Pillow
+requests
