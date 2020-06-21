@@ -55,8 +55,8 @@ __copyright__ = "Copyright 2020, bgeneto"
 __deprecated__ = False
 __license__ = "GPLv3"
 __status__ = "Development"
-__date__ = "2020/06/18"
-__version__ = "0.1.8"
+__date__ = "2020/06/21"
+__version__ = "0.1.9"
 
 
 # multiprocessing requires passing these vars explicitly
@@ -484,7 +484,7 @@ def hbarPlot(df, ptype, gtype, states, cmdargs):
     ylabels = [states.loc[v, ptype] for v in codes]
     setupHbarPlot(vals, y_pos, ylabels, ptype, gtype,
                   dt.strftime('%d/%m/%Y'), ax, color_grad)
-    fn = os.path.join("output", "png", f"{gtype}_per_{ptype}.png")
+    fn = os.path.join(PARAMS['SCRIPT_PATH'], "output", "png", f"{gtype}_per_{ptype}.png")
     plt.savefig(fn, bbox_inches='tight', facecolor=fig.get_facecolor())
     plt.close('all')
 
