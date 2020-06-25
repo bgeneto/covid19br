@@ -55,8 +55,8 @@ __copyright__ = "Copyright 2020, bgeneto"
 __deprecated__ = False
 __license__ = "GPLv3"
 __status__ = "Development"
-__date__ = "2020/06/21"
-__version__ = "0.1.9"
+__date__ = "2020/06/25"
+__version__ = "0.2.0"
 
 
 # multiprocessing requires passing these vars explicitly
@@ -398,7 +398,7 @@ def setupHbarPlot(vals, y_pos, ylabels, ptype, gtype, dt, ax, color):
     ax.set_yticklabels(ylabels, fontsize=14)
     nvals = len(vals)
     # credits
-    ax.text(0.985, 0.06, '© 2020 bgeneto', transform=ax.transAxes, ha='right',
+    ax.text(0.985, 0.05, '© 2020 bgeneto', transform=ax.transAxes, ha='right',
             color='#777777', bbox=dict(facecolor='white', alpha=0.75, edgecolor='white'))
     ax.text(0.985, 0.02, 'Fontes: IBGE / Secretarias de Saúde Estaduais / Brasil.IO', transform=ax.transAxes, ha='right',
             color='#777777', bbox=dict(facecolor='white', alpha=0.75, edgecolor='white'))
@@ -495,7 +495,7 @@ def animatedPlot(i, df, df_rank, ptype, gtype, states, ax, colors):
     """
 
     # our ordered subset
-    #subdf = df.iloc[i,:].replace(np.nan, 0).sort_values(ascending=True)
+    # subdf = df.iloc[i,:].replace(np.nan, 0).sort_values(ascending=True)
     ax.clear()
     ax.xaxis.set_ticks_position('top')
     ax.set_axisbelow(True)
@@ -512,7 +512,7 @@ def animatedPlot(i, df, df_rank, ptype, gtype, states, ax, colors):
     ax.set_xlabel(None)
 
 
-def linePlot(df, state, states, cmdargs):
+def linePlot(df, state, states, cmdargs, city=False):
     # remove zeroes and nan
     ndf = df.replace(0, np.nan).dropna().sort_values('date', ascending=True)
 
@@ -530,9 +530,7 @@ def linePlot(df, state, states, cmdargs):
         ylabel = "Total de Fatalidades"
 
     # plot line color
-    color = 'b'
-    if 'deaths' in gtype:
-        color = 'r'
+    color = 'b' if 'deaths' not in gtype else 'r'
 
     # plot size
     hsize = len(ndf) / 9 if len(ndf) / 9 > 8 else 8
@@ -555,15 +553,16 @@ def linePlot(df, state, states, cmdargs):
     ax.yaxis.set_major_formatter(mpl.ticker.StrMethodFormatter('{x:n}'))
     ax.set_facecolor(PARAMS['FACECOLOR'])
     handles = plt.Rectangle((0, 0), 1, 1, fill=True, color=color)
-    ax.legend((handles,), (states.loc[state, 'state'],), loc='upper left',
+    col = 'state' if not city else 'city'
+    ax.legend((handles,), (states.loc[state, col],), loc='upper left',
               frameon=False, shadow=False, fontsize='large')
-    ax.text(0.98, 0.10, '© 2020 bgeneto', transform=ax.transAxes, ha='right',
+    ax.text(0.98, 0.085, '© 2020 bgeneto', transform=ax.transAxes, ha='right',
             color='#777777', bbox=dict(facecolor='white', alpha=0.75, edgecolor='white'))
-    ax.text(0.98, 0.03, 'Fonte: Secretaria de Saúde / Brasil.IO', transform=ax.transAxes, ha='right',
+    ax.text(0.98, 0.030, 'Fonte: Secretaria de Saúde / Brasil.IO', transform=ax.transAxes, ha='right',
             color='#777777', bbox=dict(facecolor='white', alpha=0.75, edgecolor='white'))
     plt.xticks(rotation=45)
     fn = os.path.join(PARAMS['SCRIPT_PATH'], "output",
-                      "png", f"{state}_{gtype}_historical.png")
+                      "png", f"{state}_{col}_{gtype}.png")
     plt.savefig(fn, bbox_inches='tight')
     plt.close('all')
 
@@ -573,28 +572,81 @@ def historicalPlot(df, states, cmdargs):
     Generate historical .png image files for cases and deaths per state
     """
     # plot for selected states only
-
+    results = []
     for state in states.index:
         if state in df['state'].values:
             if cmdargs.parallel:
-                # cases
-                pool.apply_async(linePlot, args=(
-                    df.loc[df['state'] == state, ['date', 'confirmed']],
-                    state, states, cmdargs,)
+                # state cases
+                results.append(
+                    pool.apply_async(linePlot, args=(
+                        df.loc[
+                            (df['state'] == state) &
+                            (df['place_type'] == 'state'),
+                            ['date', 'confirmed']
+                        ], state, states, cmdargs,)
+                    )
                 )
-                # deaths
-                pool.apply_async(linePlot, args=(
-                    df.loc[df['state'] == state, ['date', 'deaths']],
-                    state, states, cmdargs,)
+                # state deaths
+                results.append(
+                    pool.apply_async(linePlot, args=(
+                        df.loc[
+                            (df['state'] == state) &
+                            (df['place_type'] == 'state'),
+                            ['date', 'deaths']
+                        ], state, states, cmdargs,)
+                    )
                 )
-            else:
-                linePlot(df.loc[df['state'] == state, [
-                    'date', 'confirmed']], state, states, cmdargs)
-                linePlot(df.loc[df['state'] == state, [
-                    'date', 'deaths']], state, states, cmdargs)
+                # city cases
+                results.append(
+                    pool.apply_async(linePlot, args=(
+                        df.loc[
+                            (df['state'] == state) &
+                            (df['place_type'] == 'city') &
+                            (df['city'] == states.loc[state, 'city']),
+                            ['date', 'confirmed']
+                        ], state, states, cmdargs, True,)
+                    )
+                )
+                # city deaths
+                results.append(
+                    pool.apply_async(linePlot, args=(
+                        df.loc[
+                            (df['state'] == state) &
+                            (df['place_type'] == 'city') &
+                            (df['city'] == states.loc[state, 'city']),
+                            ['date', 'deaths']
+                        ], state, states, cmdargs, True,)
+                    )
+                )
+            else:  # sequential exec :-(
+                # state
+                linePlot(df.loc[(df['state'] == state) &
+                                (df['place_type'] == 'state'),
+                                ['date', 'confirmed']],
+                         state, states, cmdargs)
+                linePlot(df.loc[(df['state'] == state) &
+                                (df['place_type'] == 'state'),
+                                ['date', 'deaths']],
+                         state, states, cmdargs)
+                # city
+                linePlot(df.loc[(df['state'] == state) &
+                                (df['place_type'] == 'city') &
+                                (df['city'] == states.loc[state, 'city']),
+                                ['date', 'confirmed']],
+                         state, states, cmdargs, True)
+                linePlot(df.loc[(df['state'] == state) &
+                                (df['place_type'] == 'city') &
+                                (df['city'] == states.loc[state, 'city']),
+                                ['date', 'deaths']],
+                         state, states, cmdargs, True)
         else:
             LOGGER.error(
                 "Estado '{}' não encontrado no arquivo csv ".format(state))
+
+    # required in order to trigger exceptions
+    if cmdargs.parallel:
+        for result in results:
+            result.get()
 
 
 def dtFmt(dt):
@@ -779,11 +831,13 @@ def main():
     # convert to csv to dataframes in order to plot
     fmtDataFrameFromCsv(df, states_df)
 
-    # historical plots of cases and deaths for selected states only
+    # historical plots of cases and deaths for selected states and capitals
     if not cmdargs.no_graph:
         LOGGER.info("Gerando gráficos png para cada estado/capital")
-        historicalPlot(df.loc[df['place_type'] == 'state'],
-                       states_df, cmdargs)
+        try:
+            historicalPlot(df, states_df, cmdargs)
+        except:
+            raise
 
     # calculate per mil rates and per (population) density rates
     df['confirmed_per_mil'] = 1e6 * df['confirmed'] / \
@@ -803,16 +857,24 @@ def main():
     if not cmdargs.no_graph:
         LOGGER.info(
             "Favor aguardar, gerando gráficos de barra para cada estado/capital")
+        results = []
         for gtype in PARAMS['GTYPES']:
             for ptype in ['state', 'city']:
                 if cmdargs.parallel:
-                    pool.apply_async(hbarPlot, args=(
-                        hbarSubDf(df, ptype, gtype), ptype, gtype,
-                        states_df, cmdargs,)
+                    results.append(
+                        pool.apply_async(hbarPlot, args=(
+                            hbarSubDf(df, ptype, gtype), ptype, gtype,
+                            states_df, cmdargs,)
+                        )
                     )
                 else:
                     hbarPlot(hbarSubDf(df, ptype, gtype), ptype, gtype,
                              states_df, cmdargs)
+
+        # required to catch apply_async worker exceptions (sad but true)
+        if cmdargs.parallel:
+            for result in results:
+                result.get()
 
     # create animated bar graph racing chart
     results = []
@@ -872,7 +934,9 @@ if __name__ == '__main__':
         except SystemExit:
             os._exit(0)
     except BaseException as e:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
         LOGGER.critical(str(e))
+        LOGGER.critical("Line: {}".format(exc_tb.tb_lineno))
     finally:
         if cmdargs.parallel:
             pool.close()
